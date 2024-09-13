@@ -42,7 +42,7 @@ Ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/jaswant04/food-delivery-app.git
+   git clone https://github.com/jaswant04/foodDelivery.git
    cd food-delivery-app
 2. Navigate to the backend folder and install the dependencies:
 
