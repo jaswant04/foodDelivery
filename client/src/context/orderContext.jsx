@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 import { useAuth } from "./authContext";
 import { useCart } from "./CartContext";
+import { Flip, toast } from "react-toastify";
 
 const orderContext = createContext();
 
@@ -29,12 +30,32 @@ export const OrderProvider = ({ children }) => {
                 { userId: user.id },
                 { withCredentials: true }
             );
-            console.log(res.data.message)
-            alert(res.data.message); // Display success message
+            toast.success(`${res.data.message}`, {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Flip,
+            });
             setCart([]);
+
         } catch (error) {
             if (error.response?.data?.message) {
-                alert(error.response.data.message);
+                toast.error(`${res.data.message}`, {
+                    position: "top-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Flip,
+                });
             } else {
                 console.error('Failed to checkout:', error.message);
                 alert("Failed to place order.");

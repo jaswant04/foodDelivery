@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from './authContext';
+import { Bounce, toast } from 'react-toastify';
 
 const CartContext = createContext();
 
@@ -46,7 +47,18 @@ export const CartProvider = ({ children }) => {
         try {
             await axios.post(`${import.meta.env.VITE_API_URL}/cart/add`, { userId, itemId }, { withCredentials: true });
             fetchCart(userId); // Refresh the cart after adding an item
-            alert("Added to the cart")
+            toast.success('Item added to the cart.', {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+
         } catch (error) {
             console.error('Failed to add item to cart:', error.message);
         }
@@ -83,7 +95,17 @@ export const CartProvider = ({ children }) => {
                 withCredentials: true
             });
             fetchCart(userId); // Refresh the cart after removing an item
-            alert("Removed from the cart")
+            toast.success('Item removed to the cart.', {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         } catch (error) {
             console.error('Failed to remove item from cart:', error.message);
         }

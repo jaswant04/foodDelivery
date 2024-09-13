@@ -22,7 +22,7 @@ const CartPage = () => {
 
   const handleQuantityChange = (itemId, newQuantity, stock) => {
     if (newQuantity > stock) {
-      if(stock ===0){
+      if (stock === 0) {
         return alert(`Currently not available`);
       }
       alert(`Only ${stock} in stock`);
@@ -37,34 +37,35 @@ const CartPage = () => {
 
   const handleCheckout = useCallback(() => {
     if (!isCheckingOut && !isLoading) {
-      checkout(); 
+      checkout();
     }
   }, [isCheckingOut, isLoading, checkout]);
 
 
   return (
-    <div className="container py-4 mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+    <div className="xs:py-8 sm:py-4 mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
       <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6">Your Cart</h1>
       {cart.length === 0 ? (
         <p className="text-base sm:text-lg md:text-xl">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
-          <ul className="divide-y divide-gray-200">
+          <ul className="border-2 border-gray-300">
             {cart.map(({ _id, item, quantity }) => (
               <li
                 key={_id}
-                className="py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                className="py-4 flex flex-row items-start gap-4 relative m-2 border-b-2 border-gray-300"
               >
                 <img
-                  src={item.img || "/path/to/default-image.jpg"}
+                  src={item.img}
                   alt={item.name || "Item Image"}
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-cover"
                 />
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1  flex flex-col">
                   <h2 className="text-base sm:text-lg md:text-xl font-semibold">
                     {item.name || "Item Name"}
                   </h2>
-                  <span className="text-green-600">{item.stock} in stock</span>
+                  <span className="text-green-600 xs:text-sm md:text-base">{item.stock} in stock</span>
+
                   <p className="text-gray-600 mt-1 text-sm sm:text-base">
                     {quantity} x {formatCurrency(item.price || 0)}
                   </p>
@@ -101,15 +102,17 @@ const CartPage = () => {
                     </button>
                   </div>
                 </div>
-                <p className="text-base sm:text-lg md:text-xl font-semibold mt-2 sm:mt-0">
-                  {formatCurrency((item.price || 0) * quantity)}
-                </p>
                 <button
                   onClick={() => handleRemoveItem(item._id)}
-                  className="text-red-500 hover:underline mt-2 sm:mt-0"
+                  className="text-red-500 hover:scale-110 mt-2 sm:mt-0 absolute top-1 right-1 "
                 >
-                  Remove
+                  ❌
                 </button>
+
+                <p className="text-base sm:text-lg md:text-xl font-semibold mt-2 sm:mt-0 self-end">
+                  {formatCurrency((item.price || 0) * quantity)}
+                </p>
+
               </li>
             ))}
           </ul>

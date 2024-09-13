@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { useOrder } from '../context/orderContext';
 import { useAuth } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const Order = () => {
     const { orders, fetchOrders, setOrders, isLoading, error } = useOrder();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
             fetchOrders(user.id);
         } else {
+            navigate('/')
             setOrders([]);
         }
     }, [user]);
@@ -24,7 +27,7 @@ const Order = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-6">
+        <div className="mx-auto px-4 py-6">
             <h1 className="text-3xl font-bold mb-4 text-gray-800">Your Orders</h1>
             <div className="bg-white shadow-md rounded-lg p-6">
                 {orders.length === 0 ? (

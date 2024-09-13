@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
 
 const authContext = createContext();
 
@@ -33,12 +34,12 @@ export const AuthProvider = ({ children }) => {
             console.error("Login failed:", error);
             setIsLoggedIn(false);
             setUser(null);
-    
+
             // Check if error response contains a message and return it
             if (error.response && error.response.data && error.response.data.message) {
                 throw new Error(error.response.data.message);
             }
-    
+
             // Return a generic error message if none is found
             throw new Error('An error occurred');
         }
@@ -49,6 +50,17 @@ export const AuthProvider = ({ children }) => {
             await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {}, { withCredentials: true });
             setIsLoggedIn(false);
             setUser(null);
+            toast.success('Log out Successfull.', {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         } catch (error) {
             console.error("Logout failed:", error);
         }

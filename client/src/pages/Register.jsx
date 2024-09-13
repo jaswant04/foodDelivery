@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; 
+import axios from 'axios';
+import { Flip, toast } from 'react-toastify';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -18,6 +19,17 @@ const Register = () => {
             // successful registration 
             console.log(response.data.message);
             reset(); // Reset form fields
+            toast.success('Registration Successfull.', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Flip,
+            });
             navigate('/login')
         } catch (error) {
             if (error.response && error.response.data) {
@@ -89,8 +101,8 @@ const Register = () => {
                 <input
                     type="submit"
                     value={loading ? "Submitting..." : "Submit"}
-                    className="py-2 px-4 bg-blue-500 text-white  cursor-pointer rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                    disabled={loading} 
+                    className="py-2 px-4 bg-cgrey cursor-pointer text-white rounded-lg hover:bg-corg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    disabled={loading}
                 />
                 <p className="text-sm text-gray-600">
                     Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Log in</Link>

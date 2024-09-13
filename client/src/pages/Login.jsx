@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
+import { Flip, toast } from 'react-toastify';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -13,10 +14,22 @@ const Login = () => {
     const onSubmit = async (data) => {
         setLoading(true);
         setServerError(null);
-    
+
         try {
             await login(data.Email, data.Password);
             reset();
+            toast.success('Login Successfull.', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Flip,
+            });
+
             navigate('/');
         } catch (error) {
             setServerError(error.message || 'An error occurred');
@@ -26,7 +39,7 @@ const Login = () => {
         }
     };
     return (
-        <div className='lg:p-8 lg:w-4/5 mx-auto'>
+        <div className='lg:p-8 lg:w-4/5 m-auto'>
             <form onSubmit={handleSubmit(onSubmit)} className="max-w-md m-auto p-4 bg-white text-gray-900 rounded-lg shadow-md space-y-4">
                 {serverError && <p className="text-red-500 text-sm">{serverError}</p>}
 
@@ -61,14 +74,19 @@ const Login = () => {
                     {errors.Password && <p className="text-red-500 text-sm">{errors.Password.message}</p>}
                 </div>
 
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col items-center space-y-2">
                     <input
                         type="submit"
                         value={loading ? "Logging in..." : "Submit"}
                         className="py-2 px-4 bg-cgrey cursor-pointer text-white rounded-lg hover:bg-corg focus:outline-none focus:ring-2 focus:ring-gray-500"
                         disabled={loading}
                     />
-                    <Link to="/register" className="text-sm text-blue-500 hover:underline">Create new account</Link>
+                    <p>
+
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        Doesn't have an account? <Link to="/register" className="text-blue-500 hover:underline">Create new account</Link>
+                    </p>
                 </div>
             </form>
         </div>

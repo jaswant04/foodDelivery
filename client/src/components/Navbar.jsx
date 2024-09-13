@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCartIcon, XMarkIcon, UserIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { ShoppingCartIcon, XMarkIcon, UserIcon, Bars3Icon, HomeIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../context/authContext';
 import { useCart } from '../context/CartContext';
 import Search from './Search';
@@ -15,6 +15,11 @@ const Navbar = () => {
     const OrderHistory = () => {
         navigate('/orders');
     };
+
+    useEffect(() => {
+        setIsOpen(false);
+        setIsDropdownOpen(false)
+    }, [cart])
 
     return (
         <nav className="flex flex-col md:flex-row items-start md:items-center md:justify-between p-4 relative bg-white shadow-md">
@@ -40,15 +45,19 @@ const Navbar = () => {
                 {/* Search Bar */}
                 {/* <Search /> */}
 
-               
-
                 <div className="flex flex-col md:flex-row xs:items-start md:items-center space-y-2 md:space-y-0 md:space-x-4 ml-auto">
-                <NavLink to="/" className={({ isActive }) => `${isActive ? 'text-corg' : ''} hover:text-corg`} >Home</NavLink>
-                {/* <Link to="/" className="hover:text-corg">Menu</Link> */}
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) => `${isActive ? 'text-corg' : ''} hover:text-corg`}
+                    ><HomeIcon className="w-6 h-6 " /></NavLink>
+
+                    {/* <Link to="/" className="hover:text-corg">Menu</Link> */}
                     {
                         isLoggedIn ? (
-                            <NavLink to="/cart" className="relative">
-                                <ShoppingCartIcon className="w-6 h-6" />
+                            <NavLink
+                                to="/cart"
+                                className={({ isActive }) => `${isActive ? 'text-corg' : ''} relative hover:text-corg`}
+                            ><ShoppingCartIcon className="w-6 h-6 " />
                                 <span
                                     className="absolute -top-2 -right-2 bg-corg text-gray-900 text-xs px-1 rounded-full"
                                 >{cart.length}</span>
@@ -62,7 +71,6 @@ const Navbar = () => {
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 className="flex items-center space-x-2"
                             >
-                                <span>Account</span>
                                 <UserIcon className="w-6 h-6" />
                             </button>
                             {isDropdownOpen && (
