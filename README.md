@@ -80,6 +80,7 @@ The frontend server will start on `http://localhost:5173/`.
 
 ## Folder Structure
 
+```plaintext
 food-delivery-app/
 ├── server/
 │   ├── models/
@@ -93,3 +94,4 @@ food-delivery-app/
 │   │   ├── store/
 │   └── main.jsx
 └── README.md
+
