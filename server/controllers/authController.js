@@ -3,10 +3,10 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
-    const { Name, Email, Password } = req.body;
+    const { Name, Email, Password, cPassword } = req.body;
 
     // Input validation
-    if (!Name.trim() || !Email.trim() || !Password.trim()) {
+    if (!Name.trim() || !Email.trim() || !Password.trim() || !cPassword.trim()) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -31,6 +31,10 @@ export const register = async (req, res) => {
     // Validate password length
     if (Password.length < 4) {
         return res.status(400).json({ message: 'Password must be at least 4 characters long' });
+    }
+
+    if (Password !== cPassword) {
+        return res.status(400).json({ message: 'Passwords do not match' })
     }
 
     try {

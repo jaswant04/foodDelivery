@@ -14,6 +14,9 @@ export const addToCart = async (req, res) => {
 
         const existingItem = user.cart.find(i => i.item.equals(itemId));
 
+        if (existingItem) {
+            return res.status(204).json({ message: "Already in the cart." });
+        }
         if (!existingItem) {
             user.cart.push({ item: itemId, quantity: 1 });
         }

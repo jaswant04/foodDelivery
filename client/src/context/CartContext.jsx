@@ -42,10 +42,12 @@ export const CartProvider = ({ children }) => {
             console.error('User not authenticated');
             return;
         }
-
         const userId = user.id;
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/cart/add`, { userId, itemId }, { withCredentials: true });
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/add`, { userId, itemId }, { withCredentials: true });
+            if (res.status === 204) {
+                return;
+            }
             fetchCart(userId); // Refresh the cart after adding an item
             toast.success('Item added to the cart.', {
                 position: "bottom-right",

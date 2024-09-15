@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from './pages/Home';
-import CartPage from './pages/CartPage';
+import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Order from './pages/Order.jsx';
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/cart", element: <CartPage /> },
+      { path: "/cart", element: <Cart /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/orders", element: <Order /> }
@@ -43,7 +43,8 @@ createRoot(document.getElementById('root')).render(
           <RouterProvider router={router}>
             <App />
           </RouterProvider>
-          <ToastContainer 
+          <ToastContainer
+            pauseOnFocusLoss={false}
             limit={2}
             closeOnClick
             draggable

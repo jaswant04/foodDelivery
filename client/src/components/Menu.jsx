@@ -34,11 +34,11 @@ const Menu = ({ sendData }) => {
     return (
         <div className="p-4 lg:p-8 mx-auto md:mb-8 xs:mb-4">
             <p className='font-extrabold text-lg'>What are you craving for?</p>
-            <div className="flex overflow-x-auto space-x-4 py-8  border-b-2 border-gray-300">
+            <div className="flex overflow-x-auto space-x-4 py-8  border-b-2 border-gray-300 animate-fade-in">
                 {categories.map(category => (
                     <div
                         key={category}
-                        className="flex-shrink-0 cursor-pointer text-center px-8 "
+                        className="flex-shrink-0 cursor-pointer text-center px-8"
                         onClick={() => handleCategoryClick(category)}
                     >
                         <img

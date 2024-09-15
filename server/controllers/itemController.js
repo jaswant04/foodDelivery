@@ -30,9 +30,6 @@ export const getAllItems = async (req, res) => {
     }
 };
 
-
-
-
 // Get items by category with pagination
 export const getItemsByCategory = async (req, res) => {
     const { type } = req.params;
@@ -63,5 +60,27 @@ export const getItemsByCategory = async (req, res) => {
     } catch (error) {
         console.error('Error fetching items:', error);
         res.status(500).json({ error: error.message });
+    }
+};
+
+//Search an item
+export const searchItem = async (req, res) => {
+    const { search } = req.query;
+
+    if (!search) {
+        return res.status(400).json({ error: 'Search parameter is required' });
+    }
+
+    try {
+        const result = await Item.find({ name: new RegExp(search, 'i') });
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'No items found' });
+        }
+
+        res.status(200).json({ result });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };

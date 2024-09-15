@@ -2,11 +2,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import { formatCurrency } from "../services/formatCurrency";
 import { useCart } from "../context/CartContext";
 import { useOrder } from "../context/orderContext";
+import { useAuth } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 
-const CartPage = () => {
+const Cart = () => {
   const [total, setTotal] = useState(0);
   const { cart, updateCartQuantity, removeFromCart } = useCart();
   const { checkout, isLoading, isCheckingOut } = useOrder();
+  const { user } = useAuth();
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/')
+    }
+  }, [user])
 
   useEffect(() => {
     // Calculate the total amount based on cart items
@@ -41,6 +51,9 @@ const CartPage = () => {
     }
   }, [isCheckingOut, isLoading, checkout]);
 
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="xs:py-8 sm:py-4 mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
@@ -53,7 +66,7 @@ const CartPage = () => {
             {cart.map(({ _id, item, quantity }) => (
               <li
                 key={_id}
-                className="py-4 flex flex-row items-start gap-4 relative m-2 border-b-2 border-gray-300"
+                className="py-4 flex flex-row items-start gap-4 relative m-2 border-b-2 border-gray-300 animate-fade-in"
               >
                 <img
                   src={item.img}
@@ -61,21 +74,21 @@ const CartPage = () => {
                   className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 object-cover"
                 />
                 <div className="flex-1  flex flex-col">
-                  <h2 className="text-base sm:text-lg md:text-xl font-semibold">
+                  <h2 className="xs:text-base sm:text-lg md:text-xl font-semibold">
                     {item.name || "Item Name"}
                   </h2>
-                  <span className="text-green-600 xs:text-sm md:text-base">{item.stock} in stock</span>
+                  <span className="text-green-600 xs:text-xs md:text-base">{item.stock} in stock</span>
 
                   <p className="text-gray-600 mt-1 text-sm sm:text-base">
                     {quantity} x {formatCurrency(item.price || 0)}
                   </p>
 
-                  <div className="flex items-center mt-2 gap-2">
+                  <div className="flex items-center mt-2 gap-2 xs:text-sm md:text-base">
                     <button
                       onClick={() =>
                         handleQuantityChange(item._id, quantity + 1, item.stock)
                       }
-                      className="bg-gray-200 text-gray-600 px-2 py-1 rounded hover:bg-gray-300"
+                      className="bg-gray-200 text-gray-600 px-1 rounded hover:bg-gray-300"
                     >
                       +
                     </button>
@@ -89,14 +102,14 @@ const CartPage = () => {
                           item.stock
                         )
                       }
-                      className="w-16 text-center border border-gray-300 rounded"
+                      className="w-8 text-center border border-gray-300 rounded"
                       readOnly
                     />
                     <button
                       onClick={() =>
                         handleQuantityChange(item._id, quantity - 1, item.stock)
                       }
-                      className="bg-gray-200 text-gray-600 px-2 py-1 rounded hover:bg-gray-300"
+                      className="bg-gray-200 text-gray-600 px-1 rounded hover:bg-gray-300"
                     >
                       -
                     </button>
@@ -136,5 +149,5 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default Cart;
 

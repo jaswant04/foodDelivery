@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/authContext';
 import { Flip, toast } from 'react-toastify';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [serverError, setServerError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -56,14 +58,14 @@ const Login = () => {
                         })}
                         className="mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                     />
-                    {errors.Email && <p className="text-red-500 text-sm">{errors.Email.message}</p>}
+                    {errors.Email && <p className="text-red-500 xs:text-xs sm:text-sm">{errors.Email.message}</p>}
                 </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col relative">
                     <label htmlFor="Password" className="text-gray-700 font-medium">Password</label>
                     <input
                         id="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         {...register("Password", {
                             required: "Password is required",
@@ -71,7 +73,11 @@ const Login = () => {
                         })}
                         className="mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                     />
-                    {errors.Password && <p className="text-red-500 text-sm">{errors.Password.message}</p>}
+                    {showPassword ?
+                        <EyeSlashIcon className='w-6 h-6 absolute right-2 top-2/4 text-gray-700 cursor-pointer' onClick={() => setShowPassword(false)} /> :
+                        <EyeIcon className='w-6 h-6 absolute right-2 top-2/4 text-gray-700 cursor-pointer' onClick={() => setShowPassword(true)} />
+                    }
+                    {errors.Password && <p className="text-red-500 xs:text-xs sm:text-sm">{errors.Password.message}</p>}
                 </div>
 
                 <div className="flex flex-col items-center space-y-2">
